@@ -2928,8 +2928,6 @@ void MavlinkReceiver::handle_message_statustext(mavlink_message_t *msg)
 
 void MavlinkReceiver::handle_message_gps_input(mavlink_message_t *msg)
 {
-	//TODO: ignore flag process
-
 	mavlink_gps_input_t gps_input;
 	mavlink_msg_gps_input_decode(msg, &gps_input);
 
@@ -2937,21 +2935,20 @@ void MavlinkReceiver::handle_message_gps_input(mavlink_message_t *msg)
 
 	device::Device::DeviceId device_id;
 	device_id.devid_s.bus_type = device::Device::DeviceBusType::DeviceBusType_MAVLINK;
-	device_id.devid_s.bus = _mavlink.get_instance_id();
 	device_id.devid_s.address = msg->sysid;
 	device_id.devid_s.devtype = DRV_GPS_DEVTYPE_SIM;
 
 	gps.device_id = device_id.devid;
 
-	gps.latitude_deg = gps_input.lat * 1e-7;
-	gps.longitude_deg = gps_input.lon * 1e-7;
+	gps.lat = gps_input.lat;
+	gps.lon = gps_input.lon;
 
 	if (GPS_INPUT_IGNORE_FLAG_ALT & gps_input.ignore_flags) {
 		;
 
 	} else {
-		gps.altitude_msl_m = gps_input.alt;
-		gps.altitude_ellipsoid_m = gps_input.alt;
+		gps.alt = gps_input.alt;
+		gps.alt_ellipsoid = gps_input.alt;
 	}
 
 	gps.s_variance_m_s = 0.25f;
@@ -2980,7 +2977,6 @@ void MavlinkReceiver::handle_message_gps_input(mavlink_message_t *msg)
 	gps.automatic_gain_control = 0;
 	gps.jamming_indicator = 0;
 	gps.jamming_state = 0;
-	gps.spoofing_state = 0;
 
 	gps.vel_m_s = sqrtf(gps_input.vn * gps_input.vn + gps_input.ve * gps_input.ve);
 
@@ -2999,7 +2995,7 @@ void MavlinkReceiver::handle_message_gps_input(mavlink_message_t *msg)
 		gps.vel_d_m_s = gps_input.vd;
 	}
 
-	if ((GPS_INPUT_IGNORE_FLAG_VEL_HORIZ || GPS_INPUT_IGNORE_FLAG_VEL_VERT) & gps_input.ignore_flags) {
+	if ((GPS_INPUT_IGNORE_FLAG_VEL_HORIZ | GPS_INPUT_IGNORE_FLAG_VEL_VERT) & gps_input.ignore_flags) {
 		;
 
 	} else {
