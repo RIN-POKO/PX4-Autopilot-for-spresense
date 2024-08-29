@@ -91,6 +91,8 @@
 #include <uORB/topics/position_setpoint_triplet.h>
 #include <uORB/topics/radio_status.h>
 #include <uORB/topics/rc_channels.h>
+#include <uORB/topics/rtt_ack.h>
+#include <uORB/topics/rtt_syn.h>
 #include <uORB/topics/sensor_baro.h>
 #include <uORB/topics/sensor_gps.h>
 #include <uORB/topics/telemetry_status.h>
@@ -185,6 +187,8 @@ private:
 	void handle_message_radio_status(mavlink_message_t *msg);
 	void handle_message_rc_channels(mavlink_message_t *msg);
 	void handle_message_rc_channels_override(mavlink_message_t *msg);
+	void handle_message_rtt_ack(mavlink_message_t *msg);
+	void handle_message_rtt_syn(mavlink_message_t *msg);
 	void handle_message_serial_control(mavlink_message_t *msg);
 	void handle_message_set_actuator_control_target(mavlink_message_t *msg);
 	void handle_message_set_attitude_target(mavlink_message_t *msg);

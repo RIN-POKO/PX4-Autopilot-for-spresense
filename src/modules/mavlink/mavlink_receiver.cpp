@@ -272,6 +272,14 @@ MavlinkReceiver::handle_message(mavlink_message_t *msg)
 		handle_message_gps_input(msg);
 		break;
 
+	case MAVLINK_MSG_ID_RTT_ACK:
+		handle_message_rtt_ack(msg);
+		break;
+
+	case MAVLINK_MSG_ID_RTT_SYN:
+		handle_message_rtt_syn(msg);
+		break;
+
 #if !defined(CONSTRAINED_FLASH)
 
 	case MAVLINK_MSG_ID_NAMED_VALUE_FLOAT:
@@ -3638,4 +3646,21 @@ void MavlinkReceiver::stop()
 {
 	_should_exit.store(true);
 	pthread_join(_thread, nullptr);
+}
+
+void MavlinkReceiver::handle_message_rtt_ack(mavlink_message_t *msg)
+{
+
+
+}
+
+void MavlinkReceiver::handle_message_rtt_syn(mavlink_message_t *msg)
+{
+	mavlink_rtt_syn_t rtt_syn;
+	mavlink_msg_rtt_syn_decode(msg, &rtt_syn);
+
+	// send RTT ACK
+	mavlink_rtt_ack_t rtt_ack;
+	rtt_ack.time_usec = rtt_syn.time_usec;
+	mavlink_msg_rtt_ack_send_struct(_mavlink->get_channel(), &rtt_ack);
 }
