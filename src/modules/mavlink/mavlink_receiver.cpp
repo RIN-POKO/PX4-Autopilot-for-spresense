@@ -3659,8 +3659,8 @@ void MavlinkReceiver::handle_message_rtt_syn(mavlink_message_t *msg)
 	mavlink_rtt_syn_t rtt_syn;
 	mavlink_msg_rtt_syn_decode(msg, &rtt_syn);
 
-	// send RTT ACK
+	// send RTT SYN
 	mavlink_rtt_ack_t rtt_ack;
-	rtt_ack.time_usec = rtt_syn.time_usec;
+	rtt_ack.syn_send_time_usec = rtt_syn.syn_send_time_usec;
 	mavlink_msg_rtt_ack_send_struct(_mavlink->get_channel(), &rtt_ack);
 }
