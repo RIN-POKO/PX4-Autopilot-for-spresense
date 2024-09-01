@@ -5,10 +5,10 @@
 
 #include <uORB/topics/rtt_ack.h>
 
-class MavlinkStreamRTTACK : public MavlinkStream
+class MavlinkStreamRTTAck : public MavlinkStream
 {
 public:
-	static MavlinkStream *new_instance(Mavlink *mavlink) { return new MavlinkStreamRTTACK(mavlink); }
+	static MavlinkStream *new_instance(Mavlink *mavlink) { return new MavlinkStreamRTTAck(mavlink); }
 
 	static constexpr const char *get_name_static() { return "RTT_ACK"; }
 	static constexpr uint16_t get_id_static() { return MAVLINK_MSG_ID_RTT_ACK; }
@@ -22,9 +22,9 @@ public:
 	}
 
 private:
-	explicit MavlinkStreamRTTACK(Mavlink *mavlink) : MavlinkStream(mavlink) {}
+	explicit MavlinkStreamRTTAck(Mavlink *mavlink) : MavlinkStream(mavlink) {}
 
-	uORB::Subscription _rtt_ack_sub{ORB_ID(rtt_ack), 0};
+	uORB::Subscription _rtt_ack_sub{ORB_ID(rtt_ack)};
 
 	bool send() override
 	{
@@ -33,7 +33,7 @@ private:
 		if (_rtt_ack_sub.update(&rtt_ack)) {
 			mavlink_rtt_ack_t msg{};
 
-			msg.time_usec = rtt_ack.timestamp;
+			msg.syn_send_time_usec = rtt_ack.syn_send_time_usec;
 
 			mavlink_msg_rtt_ack_send_struct(_mavlink->get_channel(), &msg);
 
@@ -42,6 +42,21 @@ private:
 
 		return false;
 	}
+
+	// bool send() override
+	// {
+	// 	rtt_ack_s rtt_ack;
+
+	// 	_rtt_ack_sub.copy(&rtt_ack);
+
+	// 	mavlink_rtt_ack_t msg{};
+
+	// 	msg.syn_send_time_usec = rtt_ack.syn_send_time_usec;
+
+	// 	mavlink_msg_rtt_ack_send_struct(_mavlink->get_channel(), &msg);
+
+	// 	return true;
+	// }
 };
 
 #endif // RTT_ACK_HPP

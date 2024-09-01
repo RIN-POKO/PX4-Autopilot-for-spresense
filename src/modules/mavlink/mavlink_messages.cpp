@@ -103,6 +103,8 @@
 #include "streams/PROTOCOL_VERSION.hpp"
 #include "streams/RAW_RPM.hpp"
 #include "streams/RC_CHANNELS.hpp"
+#include "streams/RTT_ACK.hpp"
+#include "streams/RTT_SYN.hpp"
 #include "streams/SCALED_IMU.hpp"
 #include "streams/SCALED_IMU2.hpp"
 #include "streams/SCALED_IMU3.hpp"
@@ -449,6 +451,12 @@ static const StreamListItem streams_list[] = {
 #if defined(RC_CHANNELS_HPP)
 	create_stream_list_item<MavlinkStreamRCChannels>(),
 #endif // RC_CHANNELS_HPP
+#if defined(RTT_ACK_HPP)
+	create_stream_list_item<MavlinkStreamRTTAck>(),
+#endif // RTT_ACK_HPP
+#if defined(RTT_SYN_HPP)
+	create_stream_list_item<MavlinkStreamRTTSyn>(),
+#endif // RTT_SYN_HPP
 #if defined(MANUAL_CONTROL_HPP)
 	create_stream_list_item<MavlinkStreamManualControl>(),
 #endif // MANUAL_CONTROL_HPP

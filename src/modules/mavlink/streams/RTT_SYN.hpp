@@ -3,10 +3,10 @@
 
 # include <uORB/topics/rtt_syn.h>
 
-class MavlinkStreamRTTSYN : public MavlinkStream
+class MavlinkStreamRTTSyn : public MavlinkStream
 {
 public:
-	static MavlinkStream *new_instance(Mavlink *mavlink) { return new MavlinkStreamRTTSYN(mavlink); }
+	static MavlinkStream *new_instance(Mavlink *mavlink) { return new MavlinkStreamRTTSyn(mavlink); }
 
 	static constexpr const char *get_name_static() { return "RTT_SYN"; }
 	static constexpr uint16_t get_id_static() { return MAVLINK_MSG_ID_RTT_SYN; }
@@ -20,9 +20,9 @@ public:
 	}
 
 private:
-	explicit MavlinkStreamRTTSYN(Mavlink *mavlink) : MavlinkStream(mavlink) {}
+	explicit MavlinkStreamRTTSyn(Mavlink *mavlink) : MavlinkStream(mavlink) {}
 
-	uORB::Subscription _rtt_syn_sub{ORB_ID(rtt_syn), 0};
+	uORB::Subscription _rtt_syn_sub{ORB_ID(rtt_syn)};
 
 	bool send() override
 	{
@@ -31,7 +31,7 @@ private:
 		if (_rtt_syn_sub.update(&rtt_syn)) {
 			mavlink_rtt_syn_t msg{};
 
-			msg.time_usec = rtt_syn.timestamp;
+			msg.syn_send_time_usec = rtt_syn.syn_send_time_usec;
 
 			mavlink_msg_rtt_syn_send_struct(_mavlink->get_channel(), &msg);
 
