@@ -42,21 +42,6 @@ private:
 
 		return false;
 	}
-
-	// bool send() override
-	// {
-	// 	rtt_ack_s rtt_ack;
-
-	// 	_rtt_ack_sub.copy(&rtt_ack);
-
-	// 	mavlink_rtt_ack_t msg{};
-
-	// 	msg.syn_send_time_usec = rtt_ack.syn_send_time_usec;
-
-	// 	mavlink_msg_rtt_ack_send_struct(_mavlink->get_channel(), &msg);
-
-	// 	return true;
-	// }
 };
 
 #endif // RTT_ACK_HPP

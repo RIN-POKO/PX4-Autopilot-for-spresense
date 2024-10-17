@@ -1525,8 +1525,7 @@ Mavlink::configure_streams_to_default(const char *configure_single_stream)
 		configure_stream_local("VFR_HUD", 4.0f);
 		configure_stream_local("VIBRATION", 0.1f);
 		configure_stream_local("WIND_COV", 0.5f);
-		configure_stream_local("RTT_ACK", 50.0f);
-		configure_stream_local("RTT_SYN", 50.0f);
+		// configure_stream_local("RTT_ACK", 50.0f);
 
 #if !defined(CONSTRAINED_FLASH)
 		configure_stream_local("DEBUG", 1.0f);
@@ -1590,7 +1589,6 @@ Mavlink::configure_streams_to_default(const char *configure_single_stream)
 		configure_stream_local("VIBRATION", 0.5f);
 		configure_stream_local("WIND_COV", 10.0f);
 		configure_stream_local("RTT_ACK", 50.0f);
-		configure_stream_local("RTT_SYN", 50.0f);
 
 #if !defined(CONSTRAINED_FLASH)
 		configure_stream_local("DEBUG", 10.0f);
